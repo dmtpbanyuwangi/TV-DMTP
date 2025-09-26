@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Rotator</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="dashboardFrame" src="" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+  <script>
+    const urls = [
+      "https://lookerstudio.google.com/embed/reporting/a307509e-8e2b-4bbd-ab25-738e3b05833c/page/NanSF",
+      "https://lookerstudio.google.com/embed/reporting/9a3212f8-6811-4cc7-b322-3944b5347bd1/page/p_k08656wltd",
+      "https://lookerstudio.google.com/embed/reporting/8fddaefb-ac19-4c7c-8b44-deae51529cf2/page/p_l2jw86tqsd",
+      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_mpo1q3wbtd",
+      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_dea9hpxkud",
+      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_empg0s8rqd",
+      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_86lwnziwpd"
+    ];
+    let current = 0;
+    const frame = document.getElementById('dashboardFrame');
+    function showNext() {
+      frame.src = urls[current];
+      current = (current + 1) % urls.length;
+    }
+    showNext();
+    setInterval(showNext, 30000); // Ganti detikan
+  </script>
+</body>
+</html>
