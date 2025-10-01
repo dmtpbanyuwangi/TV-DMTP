@@ -9,20 +9,73 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background-color: #000;
+    }
+    body {
+      position: relative;
+      height: 100vh;
     }
     iframe {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0vw;
+      left: 1.5vw;
+      width: 97vw;
+      height: 97vh;
       border: none;
+    }
+    #runningText {
+      position: absolute;
+      left: 1.5vw;
+      bottom: 0;
+      width: 97vw;
+      height: 3vh;
+      background-color: #000;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      z-index: 10;
+      font-family: Arial, sans-serif;
+    }
+    #runningText span {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: marquee 30s linear infinite;
+      font-size: 1.2em;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    #clock {
+      position: absolute;
+      right: 1.5vw;
+      bottom: 0;
+      height: 3vh;
+      display: flex;
+      align-items: center;
+      color: white;
+      font-size: 1.2em;
+      background-color: #000;
+      padding-left: 25px;
+      padding-right: 25px;
+      font-family: Arial, sans-serif;
+      z-index: 11;
     }
   </style>
 </head>
 <body>
   <iframe id="dashboardFrame" src="" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+  <div id="runningText">
+    <span>Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.</span>
+  </div>
+  <div id="clock"></div>
+
   <script>
+    // Rotator Dashboard
     const urls = [
       "https://lookerstudio.google.com/embed/reporting/a307509e-8e2b-4bbd-ab25-738e3b05833c/page/NanSF",
       "https://lookerstudio.google.com/embed/reporting/9a3212f8-6811-4cc7-b322-3944b5347bd1/page/p_k08656wltd",
@@ -39,7 +92,18 @@
       current = (current + 1) % urls.length;
     }
     showNext();
-    setInterval(showNext, 30000); // Ganti detikan
+    setInterval(showNext, 30000);
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      const s = String(now.getSeconds()).padStart(2,'0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
   </script>
 </body>
 </html>
