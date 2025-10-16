@@ -69,11 +69,50 @@
 </head>
 <body>
   <iframe id="dashboardFrame" src="" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-
   <div id="runningText">
-    <span>Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.</span>
+    <span id="marqueeText">Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.</span>
   </div>
   <div id="clock"></div>
+  <script>
+    // Running Text Rotator
+    const texts = [
+      "Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.",
+      "Pantau terus perkembangan proyek dan pastikan target tercapai dengan efisiensi dan kualitas terbaik.",
+      "Untuk informasi lebih lanjut, silakan hubungi tim proyek atau kunjungi website resmi INKA Banyuwangi."
+    ];
+    let marqueeIndex = 0;
+    const marqueeSpan = document.getElementById('marqueeText');
+
+    function getMarqueeDuration(text) {
+      // Adjust speed: 100px per second, font-size 1.2em ~ 19px
+      const span = document.createElement('span');
+      span.style.visibility = 'hidden';
+      span.style.position = 'absolute';
+      span.style.whiteSpace = 'nowrap';
+      span.style.fontSize = '1.2em';
+      span.textContent = text;
+      document.body.appendChild(span);
+      const textWidth = span.offsetWidth;
+      document.body.removeChild(span);
+      const container = document.getElementById('runningText');
+      const containerWidth = container.offsetWidth;
+      const totalDistance = textWidth + containerWidth;
+      const speed = 100; // px per second
+      return totalDistance / speed;
+    }
+
+    function showNextMarquee() {
+      marqueeSpan.style.animation = 'none';
+      void marqueeSpan.offsetWidth; // force reflow
+      marqueeSpan.textContent = texts[marqueeIndex];
+      const duration = getMarqueeDuration(texts[marqueeIndex]);
+      marqueeSpan.style.animation = `marquee ${duration}s linear`;
+      marqueeIndex = (marqueeIndex + 1) % texts.length;
+      setTimeout(showNextMarquee, duration * 1000);
+    }
+
+    showNextMarquee();
+  </script>
 
   <script>
     // Rotator Dashboard
