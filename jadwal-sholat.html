@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Jadwal Sholat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    background: url('https://raw.githubusercontent.com/dmtpbanyuwangi/TV-DMTP/refs/heads/main/aqsa-edited%20(1).jpg')
+      center/cover no-repeat fixed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #ffffff;
+    height: 100vh;
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    padding: 40px 60px;
+    box-sizing: border-box;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 20px;
+  }
+
+  .header h1 {
+    margin: 0;
+    font-size: 100px;
+    color: #ffbf4a;
+    letter-spacing: 2px;
+  }
+
+  .header .line {
+    width: 80%;
+    height: 2px;
+    background: rgba(255,255,255,0.6);
+    margin: 5px auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .header .date {
+    font-size: 20px;
+    opacity: 0.9;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: calc(100% - 200px);
+    gap: 800px;
+    margin-top: 40px;
+  }
+
+  /* JAM BESAR */
+  .clock {
+    font-size: 340px;
+    font-weight: bold;
+    line-height: 0.8;
+  }
+
+  /* JADWAL */
+  .schedule {
+    width: 400px;
+    font-size: 40px;
+    margin-top: 20px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .row span:last-child {
+    font-weight: bold;
+  }
+
+  .active {
+    color: #ffcc00;
+  }
+
+  @media (max-width: 900px) {
+    .clock {
+      font-size: 100px;
+    }
+    .schedule {
+      font-size: 32px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Jadwal Sholat</h1>
+    <div class="line"></div>
+    <div class="date" id="tanggal">--</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="clock" id="jam">--:--</div>
+
+    <div class="schedule" id="tabelSholat"></div>
+  </div>
+
+</div>
+
+<script>
+  const API_URL =
+    'https://api.aladhan.com/v1/timings?latitude=-8.144642178481405&longitude=114.38304090393244&method=20';
+
+  let jadwal = {};
+
+  async function loadSholat() {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+
+    jadwal = json.data.timings;
+    const hijri = json.data.date.hijri;
+
+    const bulanHijriID = {
+      "Muharram": "Muharram",
+      "Safar": "Safar",
+      "Rabi al-Awwal": "Rabiul Awal",
+      "Rabi al-Thani": "Rabiul Akhir",
+      "Jumada al-Ula": "Jumadil Awal",
+      "Jumada al-Akhirah": "Jumadil Akhir",
+      "Rajab": "Rajab",
+      "Sha\u02bfb\u0101n": "Sya'ban",
+      "Ramadan": "Ramadhan",
+      "Shawwal": "Syawal",
+      "Dhu al-Qadah": "Zulkaidah",
+      "Dhu al-Hijjah": "Zulhijjah"
+    };
+
+    document.getElementById('tanggal').innerText =
+      json.data.date.readable + ' | ' +
+      `${hijri.date.split('-')[0]} ${bulanHijriID[hijri.month.en]} ${hijri.year} H`;
+
+    const waktu = [
+      ['Imsak', 'Imsak'],
+      ['Subuh', 'Fajr'],
+      ['Dzuhur', 'Dhuhr'],
+      ['Ashar', 'Asr'],
+      ['Maghrib', 'Maghrib'],
+      ['Isya', 'Isha'],
+    ];
+
+    const box = document.getElementById('tabelSholat');
+    box.innerHTML = '';
+
+    waktu.forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'row';
+      div.innerHTML = `
+        <span>${w[0]}</span>
+        <span id="${w[1]}">${jadwal[w[1]]}</span>
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  function updateClock() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+
+    document.getElementById('jam').innerText = `${hh}\n${mm}`;
+
+    const nowHM = `${hh}:${mm}`;
+    ['Imsak','Fajr','Dhuhr','Asr','Maghrib','Isha'].forEach(w => {
+      const el = document.getElementById(w);
+      if (!el) return;
+      el.classList.toggle('active', jadwal[w] === nowHM);
+    });
+  }
+
+  loadSholat();
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
