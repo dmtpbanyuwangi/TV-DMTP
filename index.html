@@ -1,150 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Rotator</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #000;
-    }
-    body {
-      position: relative;
-      height: 100vh;
-    }
-    iframe {
-      position: absolute;
-      top: 0vw;
-      left: 1.5vw;
-      width: 97vw;
-      height: 97vh;
-      border: none;
-    }
-    #runningText {
-      position: absolute;
-      left: 1.5vw;
-      bottom: 0;
-      width: 97vw;
-      height: 3vh;
-      background-color: #000;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      overflow: hidden;
-      z-index: 10;
-      font-family: Arial, sans-serif;
-    }
-    #runningText span {
-      display: inline-block;
-      white-space: nowrap;
-      padding-left: 100%;
-      animation: marquee 30s linear infinite;
-      font-size: 1.2em;
-    }
-    @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-    #clock {
-      position: absolute;
-      right: 1.5vw;
-      bottom: 0;
-      height: 3vh;
-      display: flex;
-      align-items: center;
-      color: white;
-      font-size: 1.2em;
-      background-color: #000;
-      padding-left: 15px;
-      padding-right: 10px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      z-index: 11;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Dashboard Rotator – Preload 8 Iframe</title>
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+/* ===== DASHBOARD IFRAMES ===== */
+.frame {
+  position: absolute;
+  top: 0;
+  left: 1.5vw;
+  width: 97vw;
+  height: 97vh;
+  border: none;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  z-index: 1;
+}
+.frame.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* ===== RUNNING TEXT ===== */
+#runningText {
+  position: absolute;
+  left: 1.5vw;
+  bottom: 0;
+  width: 97vw;
+  height: 3vh;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  z-index: 10;
+}
+#runningText span {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%;
+  font-size: 1.2em;
+}
+
+/* ===== CLOCK ===== */
+#clock {
+  position: absolute;
+  right: 1.5vw;
+  bottom: 0;
+  height: 3vh;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1.2em;
+  background-color: #000;
+  padding: 0 10px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  z-index: 11;
+}
+
+/* ===== MARQUEE KEYFRAMES ===== */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+</style>
 </head>
+
 <body>
-  <iframe id="dashboardFrame" src="" allowfullscreen></iframe>
-  <div id="runningText">
-    <span id="marqueeText">Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.</span>
-  </div>
-  <div id="clock"></div>
-  <script>
-    // Running Text Rotator  sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-    const texts = [
-      "Selamat Datang di Dashboard Monitoring INKA Banyuwangi. Dashboard ini Menyajikan Informasi Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.",
-      "Pantau terus perkembangan proyek dan pastikan target tercapai secara efisien dengan kualitas terbaik.",
-      "Dashboard ini dikelola oleh Direktorat Pengelolaan Kualitas PT Industri Kereta Api (Persero).",
-    ];
-    let marqueeIndex = 0;
-    const marqueeSpan = document.getElementById('marqueeText');
 
-    function getMarqueeDuration(text) {
-      // Adjust speed: 100px per second, font-size 1.2em ~ 19px
-      const span = document.createElement('span');
-      span.style.visibility = 'hidden';
-      span.style.position = 'absolute';
-      span.style.whiteSpace = 'nowrap';
-      span.style.fontSize = '1.2em';
-      span.textContent = text;
-      document.body.appendChild(span);
-      const textWidth = span.offsetWidth;
-      document.body.removeChild(span);
-      const container = document.getElementById('runningText');
-      const containerWidth = container.offsetWidth;
-      const totalDistance = textWidth + containerWidth;
-      const speed = 100; // px per second
-      return totalDistance / speed;
-    }
+<!-- ===== PRELOADED IFRAMES ===== -->
+<iframe class="frame active" src="https://lookerstudio.google.com/embed/reporting/a307509e-8e2b-4bbd-ab25-738e3b05833c/page/NanSF"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/9a3212f8-6811-4cc7-b322-3944b5347bd1/page/p_k08656wltd"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/8fddaefb-ac19-4c7c-8b44-deae51529cf2/page/p_l2jw86tqsd"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_mpo1q3wbtd"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_dea9hpxkud"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/c03c78ce-0a42-4e97-956b-b21e232ad393/page/p_pqcp5d5iyd"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_empg0s8rqd"></iframe>
+<iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_86lwnziwpd"></iframe>
 
-    function showNextMarquee() {
-      marqueeSpan.style.animation = 'none';
-      void marqueeSpan.offsetWidth; // force reflow
-      marqueeSpan.textContent = texts[marqueeIndex];
-      const duration = getMarqueeDuration(texts[marqueeIndex]);
-      marqueeSpan.style.animation = `marquee ${duration}s linear`;
-      marqueeIndex = (marqueeIndex + 1) % texts.length;
-      setTimeout(showNextMarquee, duration * 1000);
-    }
+<!-- ===== RUNNING TEXT ===== -->
+<div id="runningText">
+  <span id="marqueeText">
+    Selamat Datang di Dashboard Monitoring INKA Banyuwangi.
+    Dashboard ini menyajikan informasi progres proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.
+    Pantau terus perkembangan proyek dan pastikan target tercapai secara efisien dengan kualitas terbaik.
+    Dashboard ini dikelola oleh Direktorat Pengelolaan Kualitas PT Industri Kereta Api (Persero).
+  </span>
+</div>
 
-    showNextMarquee();
-  </script>
+<!-- ===== CLOCK ===== -->
+<div id="clock"></div>
 
-  <script>
-    // Rotator Dashboard
-    const urls = [
-      "https://lookerstudio.google.com/embed/reporting/a307509e-8e2b-4bbd-ab25-738e3b05833c/page/NanSF",        // Foto Direktur
-      "https://lookerstudio.google.com/embed/reporting/9a3212f8-6811-4cc7-b322-3944b5347bd1/page/p_k08656wltd", // Cuaca
-      "https://lookerstudio.google.com/embed/reporting/8fddaefb-ac19-4c7c-8b44-deae51529cf2/page/p_l2jw86tqsd", // Andon GD
-      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_mpo1q3wbtd", // Fabrikasi GD
-      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_dea9hpxkud", // Finishing GD
-      "https://lookerstudio.google.com/embed/reporting/c03c78ce-0a42-4e97-956b-b21e232ad393/page/p_pqcp5d5iyd", // Andon KCI
-      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_empg0s8rqd", // Fabrikasi KCI
-      "https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_86lwnziwpd", // Finishing KCI
-    ];
-    let current = 0;
-    const frame = document.getElementById('dashboardFrame');
-    function showNext() {
-      frame.src = urls[current];
-      current = (current + 1) % urls.length;
-    }
-    showNext();
-    setInterval(showNext, 60000);
+<script>
+/* ===== ROTATOR (90 DETIK - AMAN) ===== */
+const frames = document.querySelectorAll('.frame');
+let current = 0;
+const interval = 90000;
 
-    // Clock
-    function updateClock() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2,'0');
-      const m = String(now.getMinutes()).padStart(2,'0');
-      const s = String(now.getSeconds()).padStart(2,'0');
-      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+setInterval(() => {
+  frames[current].classList.remove('active');
+  current = (current + 1) % frames.length;
+  frames[current].classList.add('active');
+}, interval);
+
+/* ===== CLOCK ===== */
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===== RUNNING TEXT (ADAPTIF & LAMBAT) ===== */
+const marquee = document.getElementById('marqueeText');
+const container = document.getElementById('runningText');
+
+/* 🔧 Kecepatan aman untuk TV */
+const SPEED = 40; // pixel per detik (lebih kecil = lebih lambat)
+
+function startMarquee() {
+  marquee.style.animation = 'none';
+  marquee.offsetHeight; // force reflow
+
+  const textWidth = marquee.offsetWidth;
+  const containerWidth = container.offsetWidth;
+  const distance = textWidth + containerWidth;
+  const duration = distance / SPEED;
+
+  marquee.style.animation = `marquee ${duration}s linear infinite`;
+}
+
+window.addEventListener('load', startMarquee);
+window.addEventListener('resize', startMarquee);
+</script>
+
 </body>
 </html>
