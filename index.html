@@ -1,85 +1,75 @@
-B<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Rotator – PT INKA Pabrik Banyuwangi</title>
+<title>Dashboard Rotator – INKA Banyuwangi</title>
 
 <style>
+/* ===== CSS DASAR ===== */
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background: #000;
-  overflow: hidden;
+  height: 100%; margin: 0; padding: 0;
+  background: #000; overflow: hidden;
 }
 
 /* ===== DASHBOARD IFRAMES ===== */
 .frame {
-  position: absolute;
-  top: 0;
-  left: 1.5vw;
-  width: 97vw;
-  height: 97vh;
-  border: none;
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
+  position: absolute; top: 0; left: 1.5vw;
+  width: 97vw; height: 97vh; border: none;
+  opacity: 0; transition: opacity 1.2s ease-in-out;
   z-index: 1;
 }
-.frame.active {
-  opacity: 1;
-  z-index: 2;
-}
+.frame.active { opacity: 1; z-index: 2; }
 
-/* ===== RUNNING TEXT ===== */
+/* ===== NAVIGASI TERSEMBUNYI (KLIK KIRI/KANAN) ===== */
+.nav-trigger {
+  position: absolute; top: 0; width: 5vw; height: 97vh;
+  z-index: 100; cursor: pointer; background: rgba(255,255,255,0); /* Transparan */
+}
+#prevTrigger { left: 0; }
+#nextTrigger { right: 0; }
+/* Opsional: munculkan sedikit warna saat hover untuk admin */
+.nav-trigger:hover { background: rgba(255,255,255,0.02); }
+
+/* ===== LAYAR PESAN SHOLAT (OVERLAY) ===== */
+#sholatOverlay {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+  color: white; display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  z-index: 9999; font-family: Arial, sans-serif; text-align: center;
+}
+#sholatOverlay h1 { font-size: 6em; margin: 0; color: #ffd700; }
+#sholatOverlay p { font-size: 2em; opacity: 0.8; margin-top: 20px; }
+
+/* ===== RUNNING TEXT & CLOCK ===== */
 #runningText {
-  position: absolute;
-  left: 1.5vw;
-  bottom: 0;
-  width: 97vw;
-  height: 3vh;
-  background: #000;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  z-index: 10;
+  position: absolute; left: 1.5vw; bottom: 0; width: 97vw; height: 3vh;
+  background: #000; color: #fff; display: flex; align-items: center;
+  overflow: hidden; font-family: Arial, sans-serif; z-index: 10;
 }
-#runningText span {
-  display: inline-block;
-  white-space: nowrap;
-  padding-left: 100%;
-  font-size: 1.2em;
-}
-
-/* ===== CLOCK ===== */
+#runningText span { display: inline-block; white-space: nowrap; padding-left: 100%; font-size: 1.2em; }
 #clock {
-  position: absolute;
-  right: 1.5vw;
-  bottom: 0;
-  height: 3vh;
-  display: flex;
-  align-items: center;
-  color: white;
-  font-size: 1.2em;
-  background-color: #000;
-  padding: 0 10px;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  z-index: 11;
+  position: absolute; right: 1.5vw; bottom: 0; height: 3vh;
+  display: flex; align-items: center; color: white; font-size: 1.2em;
+  background-color: #000; padding: 0 10px; font-family: Arial, sans-serif;
+  font-weight: bold; z-index: 101; cursor: pointer;
 }
 
-/* ===== MARQUEE KEYFRAMES ===== */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-100%); }
-}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 </style>
 </head>
 
 <body>
 
-<!-- ===== PRELOADED IFRAMES ===== -->
+<div id="prevTrigger" class="nav-trigger" title="Slide Sebelumnya"></div>
+<div id="nextTrigger" class="nav-trigger" title="Slide Berikutnya"></div>
+
+<div id="sholatOverlay">
+  <h1>Waktunya Menunaikan Ibadah Sholat</h1>
+  <p>Dashboard akan kembali aktif dalam 10 menit.</p>
+</div>
+
 <iframe class="frame active" src="https://lookerstudio.google.com/embed/reporting/a307509e-8e2b-4bbd-ab25-738e3b05833c/page/NanSF"></iframe>
 <iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/9a3212f8-6811-4cc7-b322-3944b5347bd1/page/p_k08656wltd"></iframe>
 <iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/8fddaefb-ac19-4c7c-8b44-deae51529cf2/page/p_l2jw86tqsd"></iframe>
@@ -90,64 +80,100 @@ html, body {
 <iframe class="frame" src="https://lookerstudio.google.com/embed/reporting/73ba16f1-2e9d-435b-b9ce-4701cdef13e1/page/p_86lwnziwpd"></iframe>
 <iframe class="frame" src="https://dmtpbanyuwangi.github.io/Jadwal-Sholat/"></iframe>
 
-
-<!-- ===== RUNNING TEXT ===== -->
-<div id="runningText">
-  <span id="marqueeText">
-    Selamat Datang di Dashboard Monitoring INKA Banyuwangi.
-    Dashboard ini menyajikan informasi progres proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton.
+<div id="runningText"><span id="marqueeText">
+    Selamat Datang di Dashboard Monitoring INKA Banyuwangi. 
+    Progres Proyek 16 TS KRL KCI dan 1125 GD BM 54 Ton. 
     Pantau terus perkembangan proyek dan pastikan target tercapai secara efisien dengan kualitas terbaik.
-    Dashboard ini dikelola oleh Direktorat Pengelolaan Kualitas PT Industri Kereta Api (Persero).
-  </span>
-</div>
-
-<!-- ===== CLOCK ===== -->
+    Dashboard ini dikelola oleh Direktorat Pengelolaan Kualitas PT Industri Kereta Api (Persero).</span></div>
 <div id="clock"></div>
 
 <script>
-/* ===== ROTATOR (90 DETIK - AMAN) ===== */
 const frames = document.querySelectorAll('.frame');
 let current = 0;
-const interval = 90000;
+let isSholatTime = false;
+const rotationInterval = 90000;
 
-setInterval(() => {
+/* ===== FUNGSI PINDAH SLIDE ===== */
+function showFrame(index) {
   frames[current].classList.remove('active');
-  current = (current + 1) % frames.length;
+  current = (index + frames.length) % frames.length;
   frames[current].classList.add('active');
-}, interval);
+}
 
-/* ===== CLOCK ===== */
+function nextFrame() { showFrame(current + 1); }
+function prevFrame() { showFrame(current - 1); }
+
+// Auto Rotate
+let timer = setInterval(nextFrame, rotationInterval);
+
+// Reset Timer saat user klik manual
+function resetTimer() {
+  clearInterval(timer);
+  timer = setInterval(nextFrame, rotationInterval);
+}
+
+/* ===== EVENT LISTENER NAVIGASI ===== */
+document.getElementById('nextTrigger').onclick = () => { nextFrame(); resetTimer(); };
+document.getElementById('prevTrigger').onclick = () => { prevFrame(); resetTimer(); };
+
+/* ===== JADWAL SHOLAT API ===== */
+let jadwalSholat = {};
+async function updateJadwalSholat() {
+  try {
+    const resp = await fetch('https://api.aladhan.com/v1/timings?latitude=-8.144642178481405&longitude=114.38304090393244&method=20');
+    const data = await resp.json();
+    jadwalSholat = data.data.timings;
+  } catch (e) { console.error("Gagal update jadwal."); }
+}
+
+function checkSholatTime() {
+  if (!jadwalSholat.Dhuhr || isTesting) return;
+  const now = new Date();
+  const times = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  let match = false;
+  times.forEach(k => {
+    const [h, m] = jadwalSholat[k].split(':').map(Number);
+    const sDate = new Date(); sDate.setHours(h, m, 0);
+    const diff = (now - sDate) / 60000;
+    if (diff >= 0 && diff < 10) match = true;
+  });
+  toggleSholatOverlay(match);
+}
+
+function toggleSholatOverlay(show) {
+  isSholatTime = show;
+  document.getElementById('sholatOverlay').style.display = show ? 'flex' : 'none';
+}
+
+updateJadwalSholat();
+setInterval(updateJadwalSholat, 3600000);
+setInterval(checkSholatTime, 10000);
+
+/* ===== FITUR TESTING (KLIK JAM) ===== */
+let isTesting = false;
+document.getElementById('clock').onclick = function() {
+  if (isTesting) return;
+  isTesting = true;
+  toggleSholatOverlay(true);
+  setTimeout(() => { 
+    isTesting = false; 
+    toggleSholatOverlay(false); 
+  }, 10000); // Tampilkan 10 detik untuk test
+};
+
+/* ===== JAM & MARQUEE ===== */
 function updateClock() {
   const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB');
 }
 setInterval(updateClock, 1000);
-updateClock();
 
-/* ===== RUNNING TEXT (ADAPTIF & LAMBAT) ===== */
 const marquee = document.getElementById('marqueeText');
-const container = document.getElementById('runningText');
-
-/* 🔧 Kecepatan aman untuk TV */
-const SPEED = 40; // pixel per detik (lebih kecil = lebih lambat)
-
 function startMarquee() {
-  marquee.style.animation = 'none';
-  marquee.offsetHeight; // force reflow
-
-  const textWidth = marquee.offsetWidth;
-  const containerWidth = container.offsetWidth;
-  const distance = textWidth + containerWidth;
-  const duration = distance / SPEED;
-
+  const duration = (marquee.offsetWidth + window.innerWidth) / 40;
   marquee.style.animation = `marquee ${duration}s linear infinite`;
 }
-
-window.addEventListener('load', startMarquee);
-window.addEventListener('resize', startMarquee);
+window.onload = startMarquee;
 </script>
 
 </body>
